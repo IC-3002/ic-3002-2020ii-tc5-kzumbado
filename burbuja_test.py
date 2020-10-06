@@ -38,6 +38,23 @@ def generar_aleatorio(n):
 
     return A
 
+def generar_mejor(n):
+    A = list(range(0, n))
+    
+    return A
+    
+def generar_peor(n):
+    A = list(range((n-1), -1,-1))
+    
+    return A
+
+def generar_promedio(n):
+    A = list(range(0, n//2))
+    B = list(range(n//2, n))
+    shuffle(B)
+    A=A+B
+    
+    return A
 
 class PruebasBurbuja(unittest.TestCase):
 
@@ -77,17 +94,56 @@ class PruebasBurbuja(unittest.TestCase):
                                   classes=[cmpl.Linear, cmpl.Quadratic], return_raw_data=True)
 
         _comparar_curvas(fitted, fitted_o)
+        
 
         self.assertLessEqual(fitted_o['times'][-1], fitted['times'][-1])
 
 
     def test_mejor_caso(self):
-        self.fail('Pendiente de implementar')
+        A = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        burbuja_optimizado(A)
+        
+        self.assertListEqual(A, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+        
+    def test_burbuja_mejor_caso(self):
+            print()
+            best, fitted_m = big_o.big_o(burbuja_optimizado, generar_mejor, min_n=10, max_n=1000,
+                                       n_measures=100, n_repeats=3, verbose=False,
+                                       classes=[cmpl.Linear, cmpl.Quadratic], return_raw_data=True)
+
+            _graficar(fitted_m, 'burbuja optimizado mejor caso')
+
 
 
     def test_peor_caso(self):
-        self.fail('Pendiente de implementar')
+        A = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+        burbuja_optimizado(A)
+        
+        self.assertListEqual(A, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+        
+    def test_burbuja_peor_caso(self):
+            print()
+            best, fitted = big_o.big_o(burbuja_optimizado, generar_peor, min_n=10, max_n=1000,
+                                       n_measures=100, n_repeats=3, verbose=False,
+                                       classes=[cmpl.Linear, cmpl.Quadratic], return_raw_data=True)
+
+            _graficar(fitted, 'burbuja optimizado peor caso')
+
 
 
     def test_caso_promedio(self):
-        self.fail('Pendiente de implementar')
+        A = [0, 1, 2, 3, 6, 4, 9, 5, 8, 7]
+        burbuja_optimizado(A)
+        
+        self.assertListEqual(A, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+        
+    def test_burbuja_caso_promedio(self):
+        print()
+        best, fitted = big_o.big_o(burbuja_optimizado, generar_promedio, min_n=10, max_n=1000,
+                                   n_measures=100, n_repeats=3, verbose=False,
+                                   classes=[cmpl.Linear, cmpl.Quadratic], return_raw_data=True)
+
+        _graficar(fitted, 'burbuja optimizado caso promedio')
+        
+   
+
